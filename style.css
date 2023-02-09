@@ -18,7 +18,7 @@ body, html {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 34rem;
+    height: 35rem;
     width: 24rem;
     background-color: #526377;
     border: 10px solid #444444;
@@ -54,13 +54,18 @@ button {
     border-radius: 4px;
     color: white;
     background-color: #949cb3;
-    transition: transform .5s;
+    transition: transform .1s;
     cursor: pointer;
     font-size: 23px;
+    font-family: 'DM Sans', sans-serif;
 }
 
-button:hover{
+/* button:hover{
     transform: scale(1.02);
+} */
+
+button:active {
+    transform: scale(0.96);
 }
 
 button.operation {
