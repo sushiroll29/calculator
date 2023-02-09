@@ -16,8 +16,8 @@ function operate(operator, a, b){
     }
 }
 
-const para = document.querySelector('p');
-para.textContent = `${operate('0', 2, 0)}`;
+// const para = document.querySelector('p');
+// para.textContent = `${operate('0', 2, 0)}`;
 
 // console.log(x);
 // console.log(divide(4, 2));
