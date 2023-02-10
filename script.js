@@ -11,12 +11,16 @@ let first, second, operation;
 
 
 function pressButton(){
-        buttons.forEach(button => button.addEventListener('click', (e) => {
+        buttons.forEach(button => button.addEventListener('mouseup', (e) => {
+            
             if(e.target.textContent !== 'AC' && e.target.textContent !== 'C' && e.target.textContent !== '+/-') { //self explanatory
                 result.textContent += e.target.textContent;
                 displayValue = result.textContent;
+
             }
             if(e.target.classList.contains('operation')) { //check if the button is an opeartor
+                
+                // result.textContent = changeOperator(e.target.textContent);
                 operation = e.target.textContent;
                 first = displayValue.slice(0, -1); //remove the operator
                 displayValue = first;
@@ -65,14 +69,14 @@ pressButton();
 deleteSingleCharacter();
 deleteAllCharacters();
 
-function add(a, b) {return parseInt(a) + parseInt(b);}
-function subtract(a, b) {return parseInt(a) - parseInt(b);}
-function multiply(a, b) {return parseInt(a) * parseInt(b);}
+function add(a, b) {return parseFloat(a) + parseFloat(b);}
+function subtract(a, b) {return parseFloat(a) - parseFloat(b);}
+function multiply(a, b) {return parseFloat(a) * parseFloat(b);}
 function divide(a,b) {
-    if(parseInt(b) === 0) {
+    if(parseFloat(b) === 0) {
         return 'NOT TODAY';
     }
-    let divisionResult = parseInt(a) / parseInt(b);
+    let divisionResult = parseFloat(a) / parseFloat(b);
     return truncateDecimals(divisionResult * 1000) / 1000; //truncate division result to max 3 decimals
 }
 
@@ -89,3 +93,6 @@ function operate(operator, a, b){
 function truncateDecimals(number){
     return Math[number < 0 ? 'ceil' : 'floor'](number);
 };
+
+//sa rezolv impartirea la un nr negativ (aka replace cand ai deja un operator)
+//poate radical in loc de %
