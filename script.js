@@ -4,7 +4,8 @@ const deleteButton = document.querySelector('.delete');
 const deleteAllButton = document.querySelector('.delete-all');
 const operationButtons = document.querySelectorAll('.operation');
 const equalButton = document.querySelector('.equals');
-const para = document.querySelector('p');
+const history = document.querySelector('.history');
+const result = document.querySelector('.result');
 let displayValue;
 let first, second, operation;
 
@@ -12,21 +13,21 @@ let first, second, operation;
 function pressButton(){
         buttons.forEach(button => button.addEventListener('click', (e) => {
             if(e.target.textContent !== 'AC' && e.target.textContent !== 'C') {
-                calculatorScreen.textContent += e.target.textContent;
-                displayValue = calculatorScreen.textContent;
+                result.textContent += e.target.textContent;
+                displayValue = result.textContent;
             }
             if(e.target.classList.contains('operation')) {
                 operation = e.target.textContent;
-                first = calculatorScreen.textContent.slice(0, -1);
+                first = result.textContent.slice(0, -1);
                 displayValue = first;
             }
             if(e.target.textContent === '=') {
                 second = displayValue.slice(first.length + 1).slice(0, -1);
                 // console.log(first);
                 // console.log(second);
-                para.textContent += `${first} ${operation} ${second} = `;
-                calculatorScreen.textContent = operate(operation, first, second);
-                para.textContent += calculatorScreen.textContent;
+                history.textContent += `${first} ${operation} ${second} = `;
+                result.textContent = operate(operation, first, second);
+                history.textContent += result.textContent;
             }
     }))
 }
@@ -37,16 +38,16 @@ function calculate(){
 
 function deleteSingleCharacter(){
     deleteButton.addEventListener('click', () => {
-        calculatorScreen.textContent = calculatorScreen.textContent.slice(0, -1);
-        displayValue = calculatorScreen.textContent;
+        result.textContent = result.textContent.slice(0, -1);
+        displayValue = result.textContent;
     })
 }
 
 function deleteAllCharacters(){
     deleteAllButton.addEventListener('click', () => {
-        calculatorScreen.textContent = "";
+        result.textContent = "";
         displayValue = "";
-        para.textContent = "";
+        history.textContent = "";
     })
 }
 

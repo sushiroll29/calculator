@@ -24,7 +24,7 @@ body, html {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 35rem;
+    height: 37rem;
     width: 24rem;
     background-color: #526377;
     border: 10px solid #444444;
@@ -34,14 +34,26 @@ body, html {
 .calculator-screen{
     background-color: #bcd1c0;
     margin: 1.4rem;
-    padding: .7rem;
-    width: 19.9rem;
+    padding: .6rem;
+    width: 20.8rem;
     height: 5rem;
     border-radius: 6px;
     display: flex;
+    flex-direction: column;
     justify-content: flex-end;
+    align-items: end;
     font-size: 35px;
     font-family: 'calculatorregular', sans-serif;
+}
+
+.history{
+    justify-self: flex-start;
+    font-size: 20px;
+    margin: .3rem 0;
+}
+
+.result {
+    margin: .2rem 0;
 }
 
 .row {
