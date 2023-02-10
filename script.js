@@ -17,20 +17,16 @@ function pressButton(){
             }
             if(e.target.classList.contains('operation')) {
                 operation = e.target.textContent;
-                // first = displayValue.slice(0, -1);
                 first = calculatorScreen.textContent.slice(0, -1);
-                // para.textContent = first + operation;
-                // displayValue = "";
                 displayValue = first;
-                // calculatorScreen.textContent = "";
             }
             if(e.target.textContent === '=') {
-                second = displayValue.slice(first.length + 1);
-                console.log(first);
-                console.log(second);
-                para.textContent += `${first} ${operation} ${second}`;
+                second = displayValue.slice(first.length + 1).slice(0, -1);
+                // console.log(first);
+                // console.log(second);
+                para.textContent += `${first} ${operation} ${second} = `;
                 calculatorScreen.textContent = operate(operation, first, second);
-                // console.log(operate(operation, first, second));
+                para.textContent += calculatorScreen.textContent;
             }
     }))
 }
