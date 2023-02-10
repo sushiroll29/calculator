@@ -2,7 +2,11 @@ const calculatorScreen = document.querySelector('.calculator-screen');
 const buttons = document.querySelectorAll('button');
 const deleteButton = document.querySelector('.delete');
 const deleteAllButton = document.querySelector('.delete-all');
+const operationButtons = document.querySelectorAll('.operation');
+const equalButton = document.querySelector('.equals');
+const para = document.querySelector('p');
 let displayValue;
+let first, second, operation;
 
 
 function pressButton(){
@@ -11,7 +15,28 @@ function pressButton(){
                 calculatorScreen.textContent += e.target.textContent;
                 displayValue = calculatorScreen.textContent;
             }
+            if(e.target.classList.contains('operation')) {
+                operation = e.target.textContent;
+                // first = displayValue.slice(0, -1);
+                first = calculatorScreen.textContent.slice(0, -1);
+                // para.textContent = first + operation;
+                // displayValue = "";
+                displayValue = first;
+                // calculatorScreen.textContent = "";
+            }
+            if(e.target.textContent === '=') {
+                second = displayValue.slice(first.length + 1);
+                console.log(first);
+                console.log(second);
+                para.textContent += `${first} ${operation} ${second}`;
+                calculatorScreen.textContent = operate(operation, first, second);
+                // console.log(operate(operation, first, second));
+            }
     }))
+}
+
+function calculate(){
+
 }
 
 function deleteSingleCharacter(){
@@ -25,6 +50,7 @@ function deleteAllCharacters(){
     deleteAllButton.addEventListener('click', () => {
         calculatorScreen.textContent = "";
         displayValue = "";
+        para.textContent = "";
     })
 }
 
@@ -32,19 +58,19 @@ pressButton();
 deleteSingleCharacter();
 deleteAllCharacters();
 
-function add(a, b) {return a + b;}
-function subtract(a, b) {return a - b;}
-function multiply(a, b) {return a * b;}
-function divide(a, b) {
-    if(b === 0) return null;
-    return a / b;
+function add(a, b) {return parseInt(a) + parseInt(b);}
+function subtract(a, b) {return parseInt(a) - parseInt(b);}
+function multiply(a, b) {return parseInt(a) * parseInt(b);}
+function divide(a,b) {
+    if(parseInt(b) === 0) return null;
+    return parseInt(a) / parseInt(b);
 }
 
 function operate(operator, a, b){
     switch(operator){
         case '+': return add(a, b);
         case '-': return subtract(a, b); 
-        case '*': return multiply(a, b);
+        case 'x': return multiply(a, b);
         case '/': return divide(a, b);
         default: alert(`${operator} is not an operator`); break;
     }

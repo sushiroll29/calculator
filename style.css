@@ -75,7 +75,7 @@ button.operation {
     background-color: #4e5963;
 }
 
-button.plus {
+.row.bottom button.operation {
     background-color: #79c52a;
 }
 
