@@ -72,7 +72,8 @@ function divide(a,b) {
     if(parseInt(b) === 0) {
         return 'NOT TODAY';
     }
-    return parseInt(a) / parseInt(b);
+    let divisionResult = parseInt(a) / parseInt(b);
+    return truncateDecimals(divisionResult * 1000) / 1000; //truncate division result to max 3 decimals
 }
 
 function operate(operator, a, b){
@@ -84,3 +85,7 @@ function operate(operator, a, b){
         default: alert(`${operator} is not an operator`); break;
     }
 }
+
+function truncateDecimals(number){
+    return Math[number < 0 ? 'ceil' : 'floor'](number);
+};
