@@ -22,12 +22,12 @@ function pressButton(){
                 first = result.textContent;
                 // console.log(first);
                 
-                history.textContent += `${first} ${operation}`;
-                result.textContent = "";
+                history.textContent += `${first} `;
+                result.textContent = `${operation} `;
         }
 
         if(e.target.classList.contains('equals')){ //handle equal
-            second = result.textContent;
+            second = result.textContent.slice(1);
             history.textContent += ` ${second} = `;
             result.textContent = operate(operation, first, second);
             resetHistory();
