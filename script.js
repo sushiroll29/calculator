@@ -32,50 +32,15 @@ function pressButton(){
             result.textContent = operate(operation, first, second);
             resetHistory();
         }
-        
-        if(e.target.textContent !== 'AC' && e.target.textContent !== 'C' && e.target.textContent !== '+/-') { //self explanatory
-            // result.textContent += e.target.textContent;
-            // displayValue = result.textContent;
+
+        if(e.target.classList.contains('plus-minus')) { //handle sign change
+            if(result.textContent){
+                result.textContent = (parseFloat(-(result.textContent)));
+            }
 
         }
-        // if(e.target.classList.contains('operation')) { //check if the button is an opeartor
-            
-        //     // result.textContent = changeOperator(e.target.textContent);
-        //     operation = e.target.textContent;
-        //     first = displayValue.slice(0, -1); //remove the operator
-        //     displayValue = first;
-        // }
-        // if(e.target.textContent === equalButton.textContent) { //check if the button is =
-        //     second = displayValue.slice(first.length + 1).slice(0, -1); //remove the operator and the =
-        //     history.textContent += `${first} ${operation} ${second} = `;
-        //     result.textContent = operate(operation, first, second);
-        //     resetHistory(); //only show the last operation on screen
-        // }
 }))
 }
-// function pressButton(){
-//         buttons.forEach(button => button.addEventListener('click', (e) => {
-            
-//             if(e.target.textContent !== 'AC' && e.target.textContent !== 'C' && e.target.textContent !== '+/-') { //self explanatory
-//                 result.textContent += e.target.textContent;
-//                 displayValue = result.textContent;
-
-//             }
-//             if(e.target.classList.contains('operation')) { //check if the button is an opeartor
-                
-//                 // result.textContent = changeOperator(e.target.textContent);
-//                 operation = e.target.textContent;
-//                 first = displayValue.slice(0, -1); //remove the operator
-//                 displayValue = first;
-//             }
-//             if(e.target.textContent === equalButton.textContent) { //check if the button is =
-//                 second = displayValue.slice(first.length + 1).slice(0, -1); //remove the operator and the =
-//                 history.textContent += `${first} ${operation} ${second} = `;
-//                 result.textContent = operate(operation, first, second);
-//                 resetHistory(); //only show the last operation on screen
-//             }
-//     }))
-// }
 
 function resetHistory(){
 if(!first || !second) {
@@ -87,11 +52,8 @@ function deleteSingleCharacter(){
     deleteButton.addEventListener('click', () => {
         if(result.textContent.length > 1) {
             result.textContent = result.textContent.slice(0, -1);
-            // displayValue = result.textContent;
         } else if(result.textContent.length === 1) {
             result.textContent = "";
-            // history.textContent = "";
-            // displayValue = result.textContent;
         }
         
     })
@@ -103,7 +65,6 @@ function deleteAllCharacters(){
         second = "";
         operation = "";
         result.textContent = "";
-        // displayValue = "";
         history.textContent = "";
     })
 }
