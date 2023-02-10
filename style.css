@@ -39,6 +39,8 @@ body, html {
     height: 5rem;
     border-radius: 6px;
     display: flex;
+    flex-grow: 0;
+    /* flex: 1; */
     flex-direction: column;
     justify-content: flex-end;
     align-items: end;
@@ -48,13 +50,14 @@ body, html {
 
 .history{
     justify-self: flex-start;
-    /* position: fixed; */
     font-size: 20px;
     margin: .3rem 0;
+    flex-basis: 10px;
 }
 
 .result {
     margin: .2rem 0;
+    min-height: 2.5rem;
 }
 
 .col {

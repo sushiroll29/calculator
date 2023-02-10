@@ -8,22 +8,30 @@ const history = document.querySelector('.history');
 const result = document.querySelector('.result');
 // let displayValue = document.querySelector('.result').textContent;
 let first, second, operation;
+const operators = ["+", "-", "x", "/"];
 
 function pressButton(){
     // let displayValue = result.textContent;
     buttons.forEach(button => button.addEventListener('click', (e) => {
         if(e.target.classList.contains('key')) { //handle number keys
+           
             result.textContent += e.target.textContent;
+                
         }
 
         if(e.target.classList.contains('operation')){ //handle operator keys
-                operation = e.target.textContent;
+            first = result.textContent;
+            
+            
+            operation = e.target.textContent;
+                
                 // console.log(operation);
-                first = result.textContent;
+                
                 // console.log(first);
                 
-                history.textContent += `${first} `;
-                result.textContent = `${operation} `;
+                history.textContent += `${first} ${operation}`;
+                result.textContent = ` `;
+                
         }
 
         if(e.target.classList.contains('equals')){ //handle equal
@@ -53,20 +61,22 @@ function deleteSingleCharacter(){
         if(result.textContent.length > 1) {
             result.textContent = result.textContent.slice(0, -1);
         } else if(result.textContent.length === 1) {
-            result.textContent = "";
+            deleteAllHandler();
         }
         
     })
 }
 
 function deleteAllCharacters(){
-    deleteAllButton.addEventListener('click', () => {
-        first = "";
-        second = "";
-        operation = "";
-        result.textContent = "";
-        history.textContent = "";
-    })
+    deleteAllButton.addEventListener('click', deleteAllHandler);
+}
+
+function deleteAllHandler(){
+    first = "";
+    second = "";
+    operation = "";
+    result.textContent = "";
+    history.textContent = "";
 }
 
 pressButton();
