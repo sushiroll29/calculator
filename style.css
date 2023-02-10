@@ -48,6 +48,7 @@ body, html {
 
 .history{
     justify-self: flex-start;
+    /* position: fixed; */
     font-size: 20px;
     margin: .3rem 0;
 }
