@@ -16,35 +16,45 @@ function pressButton(){
                 result.textContent += e.target.textContent;
                 displayValue = result.textContent;
             }
-            if(e.target.classList.contains('operation')) {
+            if(e.target.classList.contains('operation')) { //check if the button is an opeartor
                 operation = e.target.textContent;
-                first = result.textContent.slice(0, -1);
+                first = displayValue.slice(0, -1); //remove the operator
                 displayValue = first;
             }
-            if(e.target.textContent === '=') {
-                second = displayValue.slice(first.length + 1).slice(0, -1);
-                // console.log(first);
-                // console.log(second);
+            if(e.target.textContent === equalButton.textContent) {
+                second = displayValue.slice(first.length + 1).slice(0, -1); //remove the operator and the =
                 history.textContent += `${first} ${operation} ${second} = `;
                 result.textContent = operate(operation, first, second);
-                history.textContent += result.textContent;
+                resetHistory(); //only show the last operation on screen
             }
     }))
 }
 
-function calculate(){
-
+function resetHistory(){
+if(!first || !second) {
+    history.textContent = "";
+} else { history.textContent = `${first} ${operation} ${second} = `; }
 }
 
 function deleteSingleCharacter(){
     deleteButton.addEventListener('click', () => {
-        result.textContent = result.textContent.slice(0, -1);
-        displayValue = result.textContent;
+        if(result.textContent.length > 1) {
+            result.textContent = result.textContent.slice(0, -1);
+            displayValue = result.textContent;
+        } else if(result.textContent.length === 1) {
+            result.textContent = "";
+            history.textContent = "";
+            displayValue = result.textContent;
+        }
+        
     })
 }
 
 function deleteAllCharacters(){
     deleteAllButton.addEventListener('click', () => {
+        first = "";
+        second = "";
+        operation = "";
         result.textContent = "";
         displayValue = "";
         history.textContent = "";
@@ -59,7 +69,9 @@ function add(a, b) {return parseInt(a) + parseInt(b);}
 function subtract(a, b) {return parseInt(a) - parseInt(b);}
 function multiply(a, b) {return parseInt(a) * parseInt(b);}
 function divide(a,b) {
-    if(parseInt(b) === 0) return null;
+    if(parseInt(b) === 0) {
+        return 'NOT TODAY';
+    }
     return parseInt(a) / parseInt(b);
 }
 
