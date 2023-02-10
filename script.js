@@ -12,7 +12,7 @@ let first, second, operation;
 
 function pressButton(){
         buttons.forEach(button => button.addEventListener('click', (e) => {
-            if(e.target.textContent !== 'AC' && e.target.textContent !== 'C') {
+            if(e.target.textContent !== 'AC' && e.target.textContent !== 'C' && e.target.textContent !== '+/-') { //self explanatory
                 result.textContent += e.target.textContent;
                 displayValue = result.textContent;
             }
@@ -21,7 +21,7 @@ function pressButton(){
                 first = displayValue.slice(0, -1); //remove the operator
                 displayValue = first;
             }
-            if(e.target.textContent === equalButton.textContent) {
+            if(e.target.textContent === equalButton.textContent) { //check if the button is =
                 second = displayValue.slice(first.length + 1).slice(0, -1); //remove the operator and the =
                 history.textContent += `${first} ${operation} ${second} = `;
                 result.textContent = operate(operation, first, second);

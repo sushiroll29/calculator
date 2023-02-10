@@ -56,12 +56,19 @@ body, html {
     margin: .2rem 0;
 }
 
-.row {
+.col {
     display: flex;
-    /* flex: 1; */
+    flex-direction: column;
+    flex: 1;
 }
 
-.row.bottom {
+
+.calculator-buttons{
+    display: flex;
+    flex: 1;
+}
+
+.bottom {
     margin-bottom: 1.2rem;
 }
 
@@ -83,12 +90,13 @@ button:active {
     transform: scale(0.96);
 }
 
-button.operation {
+button.operation, button.plus-minus {
     background-color: #4e5963;
 }
 
-.row.bottom button.operation {
+button.operation.bottom {
     background-color: #79c52a;
+    flex: 1;
 }
 
 button.delete, button.delete-all {
