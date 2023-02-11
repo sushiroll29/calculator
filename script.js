@@ -8,21 +8,29 @@ const history = document.querySelector('.history');
 const result = document.querySelector('.result');
 let first='', second='', operation='', input='';
 
+//'input' keeps track of all the buttons that are pressed so that each operation
+//will be performed as soon as the user presses another operator (aka a single pair
+//of numbers is evaluated at a time).
 function pressButton(){
     buttons.forEach(button => button.addEventListener('click', (e) => {
         if(e.target.classList.contains('key')) { //handle number keys
             result.textContent += e.target.textContent;
             input += result.textContent.replace(/\s+/g, '');
 
-            if(history.textContent.match(/[+-x/]/)){
+            if(history.textContent.match(/[+\-x\/]/)){
                 second = result.textContent;
             }
         }
 
-        if(e.target.classList.contains('operation')){
+        if(e.target.classList.contains('plus-minus') && first){
+            second = `-${result.textContent}`.replace(/\s/g, '');
+        }
+
+        if(e.target.classList.contains('operation')){ //handle operator keys
             first = result.textContent;
             operation = e.target.textContent;
             input += operation;   
+            
             if(history.textContent.includes('=')){
                 first = result.textContent;
                 history.textContent ='';
@@ -31,14 +39,12 @@ function pressButton(){
             } else {
                 history.textContent += `${first} ${operation}`;
                 result.textContent = ` `;
-                if(checkExpression()) {
-                    slicer();
-                    
-                    let newOp = history.textContent.slice(history.textContent.length - 1, );
-                    history.textContent = `${operate(operation, first, second)} ${newOp}`;
+                if(input.match(/\d+[+\-\/x]{1}\d+/)) { //check if the input already has an operator
+                    evaluateFirstPair();
+                    let newOperator = history.textContent.slice(history.textContent.length - 1, );
+                    history.textContent = `${operate(operation, first, second)} ${newOperator}`;
                     first = history.textContent;
-                    operation = newOp;
-    
+                    operation = newOperator;
                 }
             }
             
@@ -59,27 +65,14 @@ function pressButton(){
 }))
 }
 
-function checkExpression(){
-    return input.match(/\d+[+-/x]{1}\d+/);
-}
-
-function checkHistoryContent(){
-    const equalIndex = history.textContent.search('=');
-    const equal = history.textContent[equalIndex];
-    return equal[equalIndex];
-}
-
-function slicer(){
+function evaluateFirstPair(){
     first ='';
     second ='';
-    //fix the minus problem
-    const operatorIndex = history.textContent.search(/[+-/x]{1}/);
-    // const operatorIndex = history.textContent.match(/\s[+-/x]{1}\s/).index;
-    
-    const operator = history.textContent.split('')[operatorIndex];
-    console.log(operatorIndex);
+    //check that there are spaces before and after the operator to avoid catching the - from a negative number
+    const operatorIndex = history.textContent.search(/\s[+\/x\-]{1}\s/);
+    const operator = history.textContent[operatorIndex + 1];
+    //get the parts before and after the operator to use as first and second
     const parts = history.textContent.split(operator, 2);
-    console.log(parts);
     first = parts[0].trim();
     second = parts[1].trim();
     operation = operator;
@@ -122,7 +115,10 @@ deleteSingleCharacter();
 deleteAllCharacters();
 
 function add(a, b) {return parseFloat(a) + parseFloat(b);}
-function subtract(a, b) {return parseFloat(a) - parseFloat(b);}
+function subtract(a, b) {
+    let subtractionResult = parseFloat(a) - parseFloat(b);
+    return truncateDecimals(subtractionResult * 1000) / 1000;
+}
 function multiply(a, b) {return parseFloat(a) * parseFloat(b);}
 function divide(a,b) {
     if(parseFloat(b) === 0) {
@@ -146,4 +142,3 @@ function truncateDecimals(number){
     return Math[number < 0 ? 'ceil' : 'floor'](number);
 };
 
-//sa rezolv impartirea la un nr negativ (aka replace cand ai deja un operator)
