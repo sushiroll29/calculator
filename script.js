@@ -14,9 +14,8 @@ function pressButton(){
             result.textContent += e.target.textContent;
             input += result.textContent.replace(/\s+/g, '');
 
-            if(history.textContent.match(/[+-/*]/)){
+            if(history.textContent.match(/[+-x/]/)){
                 second = result.textContent;
-                console.log(second);
             }
         }
 
@@ -75,7 +74,10 @@ function slicer(){
     second ='';
     //fix the minus problem
     const operatorIndex = history.textContent.search(/[+-/x]{1}/);
-    const operator = history.textContent[operatorIndex];
+    // const operatorIndex = history.textContent.match(/\s[+-/x]{1}\s/).index;
+    
+    const operator = history.textContent.split('')[operatorIndex];
+    console.log(operatorIndex);
     const parts = history.textContent.split(operator, 2);
     console.log(parts);
     first = parts[0].trim();
