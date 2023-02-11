@@ -6,50 +6,49 @@ const operationButtons = document.querySelectorAll('.operation');
 const equalButton = document.querySelector('.equals');
 const history = document.querySelector('.history');
 const result = document.querySelector('.result');
-// let displayValue = document.querySelector('.result').textContent;
-let first, second, operation, input='';
+let first='', second='', operation='', input='';
 
 function pressButton(){
-    // let displayValue = result.textContent;
     buttons.forEach(button => button.addEventListener('click', (e) => {
-        
         if(e.target.classList.contains('key')) { //handle number keys
-           
             result.textContent += e.target.textContent;
             input += result.textContent.replace(/\s+/g, '');
+
+            if(history.textContent.match(/[+-/*]/)){
+                second = result.textContent;
+                console.log(second);
+            }
         }
 
-        if(e.target.classList.contains('operation')){ //handle operator keys
+        if(e.target.classList.contains('operation')){
             first = result.textContent;
-            if(!second) {
-
-            }
-            
             operation = e.target.textContent;
             input += operation;   
-                
-            history.textContent += `${first} ${operation}`;
-            result.textContent = ` `;
-            //woooooo!!!! must change the hard coded bs though
-            if(checkExpression()) {
-                slicer();
-                // // first = history.textContent.slice(0, 1);
-                // second = history.textContent.slice(4, 5);
-                // operation = history.textContent.slice(2, 3);
-                let newOp = history.textContent.slice(history.textContent.length - 1, );
-                history.textContent = `${operate(operation, first, second)} ${newOp}`;
-                first = history.textContent;
-                operation = newOp;
-                input = '';
+            if(history.textContent.includes('=')){
+                first = result.textContent;
+                history.textContent ='';
+                history.textContent += `${first} ${operation}`;
+                result.textContent = '';
+            } else {
+                history.textContent += `${first} ${operation}`;
+                result.textContent = ` `;
+                if(checkExpression()) {
+                    slicer();
+                    
+                    let newOp = history.textContent.slice(history.textContent.length - 1, );
+                    history.textContent = `${operate(operation, first, second)} ${newOp}`;
+                    first = history.textContent;
+                    operation = newOp;
+    
+                }
             }
+            
         }
 
         if(e.target.classList.contains('equals')){ //handle equal
             input = '';
-            second = result.textContent.slice(1);
             history.textContent += ` ${second} = `;
             result.textContent = operate(operation, first, second);
-            resetHistory();
         }
 
         if(e.target.classList.contains('plus-minus')) { //handle sign change
@@ -62,19 +61,26 @@ function pressButton(){
 }
 
 function checkExpression(){
-    return input.match(/\d+[+-/x]{1}\d+[+-/x]{1}/);
+    return input.match(/\d+[+-/x]{1}\d+/);
+}
+
+function checkHistoryContent(){
+    const equalIndex = history.textContent.search('=');
+    const equal = history.textContent[equalIndex];
+    return equal[equalIndex];
 }
 
 function slicer(){
-    const parts = history.textContent.split('+', 2);
-    first = parts[0];
-    second = parts[1];
-    operation = history.textContent.slice(history.textContent.indexOf('+'), history.textContent.indexOf('+') + 1);
-    // console.log(parts[0]);
-    // console.log(parts[1]);
-    // first = history.textContent.substring('+');
-    // const restOfString = his
-    // console.log(first);
+    first ='';
+    second ='';
+    //fix the minus problem
+    const operatorIndex = history.textContent.search(/[+-/x]{1}/);
+    const operator = history.textContent[operatorIndex];
+    const parts = history.textContent.split(operator, 2);
+    console.log(parts);
+    first = parts[0].trim();
+    second = parts[1].trim();
+    operation = operator;
 }
 
 function resetHistory(){
@@ -139,4 +145,3 @@ function truncateDecimals(number){
 };
 
 //sa rezolv impartirea la un nr negativ (aka replace cand ai deja un operator)
-//poate radical in loc de %
