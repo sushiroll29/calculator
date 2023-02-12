@@ -56,7 +56,7 @@ function operationHandler(target){
     } else {
         history.textContent += `${first} ${operation}`;
         result.textContent = ` `;
-        if(input.match(/\d+[+\-\/x]{1}\d+/)) { //check if the input already has an operator
+        if(input.match(/\d+[+\-\/x]{1}\d+/)) { //check if 'input' already has an operator
             evaluateFirstPair();
             let newOperator = history.textContent.slice(history.textContent.length - 1, );
             history.textContent = `${operate(operation, first, second)} ${newOperator}`;
@@ -113,6 +113,7 @@ function deleteAllHandler(){
     input = "";
 }
 
+//handle keyboard input
 function pressKey(){
     document.addEventListener('keydown', (e) => {
         switch(e.key){
