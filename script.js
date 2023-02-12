@@ -13,7 +13,7 @@ let first='', second='', operation='', input='';
 //of numbers is evaluated at a time).
 function pressButton(){
     buttons.forEach(button => button.addEventListener('click', (e) => {
-        if(e.target.classList.contains('key')) { //handle number keys
+        if(e.target.classList.contains('key')) { //handle number buttons
             result.textContent += e.target.textContent;
             input += result.textContent.replace(/\s+/g, '');
 
@@ -22,25 +22,24 @@ function pressButton(){
             }
         }
 
-        if(e.target.classList.contains('plus-minus') && first){
-            second = `-${result.textContent}`.replace(/\s/g, '');
-        }
-
-        if(e.target.classList.contains('operation')){ //handle operator keys
+        if(e.target.classList.contains('operation')){ //handle operator buttons
             operationHandler(e.target.textContent);
         }
 
-        if(e.target.classList.contains('equals')){ //handle equal
+        if(e.target.classList.contains('equals')){ //handle equal button
             input = '';
             history.textContent += ` ${second} = `;
             result.textContent = operate(operation, first, second);
         }
 
-        if(e.target.classList.contains('plus-minus')) { //handle sign change
+        if(e.target.classList.contains('plus-minus')) { //handle sign change button
             if(result.textContent){
                 result.textContent = (parseFloat(-(result.textContent)));
             }
+        }
 
+        if(e.target.classList.contains('plus-minus') && first){
+            second = `${result.textContent}`.replace(/\s/g, '');
         }
 }))
 }
@@ -95,12 +94,11 @@ function deleteSingleHandler(){
         result.textContent = result.textContent.slice(0, -1);
         input = input.slice(0, -1);
     } else if(result.textContent.length === 1) {
-        deleteAllHandler();
+        result.textContent = '';
         input = input.slice(0,-1);
     }
     
 }
-
 
 function deleteAllCharacters(){
     deleteAllButton.addEventListener('click', deleteAllHandler);
@@ -117,7 +115,6 @@ function deleteAllHandler(){
 
 function pressKey(){
     document.addEventListener('keydown', (e) => {
-        // console.log(e);
         switch(e.key){
             case '0': result.textContent += '0'; break;
             case '1': result.textContent += '1'; break;
@@ -133,6 +130,7 @@ function pressKey(){
             case '-': operationHandler('-'); break;
             case '/': operationHandler('/'); break;
             case 'x': operationHandler('x'); break;
+            case '.': result.textContent += '.'; break;
             case 'Enter': {
                 input = '';
                 history.textContent += ` ${second} = `;
@@ -140,22 +138,26 @@ function pressKey(){
                 break;
             }
             case 'Backspace': deleteSingleHandler(); break;
-            
         }
-
+        input += result.textContent.replace(/\s+/g, '');
         if(history.textContent.match(/[+\-x\/]/)){
             second = result.textContent;
         }
-       
     })
 }
 
-function add(a, b) {return parseFloat(a) + parseFloat(b);}
+function add(a, b) {
+    let additionResult = parseFloat(a) + parseFloat(b);
+    return truncateDecimals(additionResult * 1000) / 1000;
+}
 function subtract(a, b) {
     let subtractionResult = parseFloat(a) - parseFloat(b);
     return truncateDecimals(subtractionResult * 1000) / 1000;
 }
-function multiply(a, b) {return parseFloat(a) * parseFloat(b);}
+function multiply(a, b) {
+    let multiplicationResult = parseFloat(a) * parseFloat(b);
+    return truncateDecimals(multiplicationResult * 1000) / 1000;;
+}
 function divide(a,b) {
     if(parseFloat(b) === 0) {
         return 'NOT TODAY';
