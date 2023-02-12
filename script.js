@@ -27,27 +27,7 @@ function pressButton(){
         }
 
         if(e.target.classList.contains('operation')){ //handle operator keys
-            first = result.textContent;
-            operation = e.target.textContent;
-            input += operation;   
-            
-            if(history.textContent.includes('=')){
-                first = result.textContent;
-                history.textContent ='';
-                history.textContent += `${first} ${operation}`;
-                result.textContent = '';
-            } else {
-                history.textContent += `${first} ${operation}`;
-                result.textContent = ` `;
-                if(input.match(/\d+[+\-\/x]{1}\d+/)) { //check if the input already has an operator
-                    evaluateFirstPair();
-                    let newOperator = history.textContent.slice(history.textContent.length - 1, );
-                    history.textContent = `${operate(operation, first, second)} ${newOperator}`;
-                    first = history.textContent;
-                    operation = newOperator;
-                }
-            }
-            
+            operationHandler(e.target.textContent);
         }
 
         if(e.target.classList.contains('equals')){ //handle equal
@@ -63,6 +43,28 @@ function pressButton(){
 
         }
 }))
+}
+
+function operationHandler(target){
+    first = result.textContent;
+    operation = target;
+    input += operation;   
+    if(history.textContent.includes('=')){
+        first = result.textContent;
+        history.textContent ='';
+        history.textContent += `${first} ${operation}`;
+        result.textContent = '';
+    } else {
+        history.textContent += `${first} ${operation}`;
+        result.textContent = ` `;
+        if(input.match(/\d+[+\-\/x]{1}\d+/)) { //check if the input already has an operator
+            evaluateFirstPair();
+            let newOperator = history.textContent.slice(history.textContent.length - 1, );
+            history.textContent = `${operate(operation, first, second)} ${newOperator}`;
+            first = history.textContent;
+            operation = newOperator;
+        }
+    }
 }
 
 function evaluateFirstPair(){
@@ -85,17 +87,20 @@ if(!first || !second) {
 }
 
 function deleteSingleCharacter(){
-    deleteButton.addEventListener('click', () => {
-        if(result.textContent.length > 1) {
-            result.textContent = result.textContent.slice(0, -1);
-            input = input.slice(0, -1);
-        } else if(result.textContent.length === 1) {
-            deleteAllHandler();
-            input = input.slice(0,-1);
-        }
-        
-    })
+    deleteButton.addEventListener('click', deleteSingleHandler);
 }
+
+function deleteSingleHandler(){
+    if(result.textContent.length > 1) {
+        result.textContent = result.textContent.slice(0, -1);
+        input = input.slice(0, -1);
+    } else if(result.textContent.length === 1) {
+        deleteAllHandler();
+        input = input.slice(0,-1);
+    }
+    
+}
+
 
 function deleteAllCharacters(){
     deleteAllButton.addEventListener('click', deleteAllHandler);
@@ -110,9 +115,40 @@ function deleteAllHandler(){
     input = "";
 }
 
-pressButton();
-deleteSingleCharacter();
-deleteAllCharacters();
+function pressKey(){
+    document.addEventListener('keydown', (e) => {
+        // console.log(e);
+        switch(e.key){
+            case '0': result.textContent += '0'; break;
+            case '1': result.textContent += '1'; break;
+            case '2': result.textContent += '2'; break;
+            case '3': result.textContent += '3'; break;
+            case '4': result.textContent += '4'; break;
+            case '5': result.textContent += '5'; break;
+            case '6': result.textContent += '6'; break;
+            case '7': result.textContent += '7'; break;
+            case '8': result.textContent += '8'; break;
+            case '9': result.textContent += '9'; break;
+            case '+': operationHandler('+'); break;
+            case '-': operationHandler('-'); break;
+            case '/': operationHandler('/'); break;
+            case 'x': operationHandler('x'); break;
+            case 'Enter': {
+                input = '';
+                history.textContent += ` ${second} = `;
+                result.textContent = operate(operation, first, second);
+                break;
+            }
+            case 'Backspace': deleteSingleHandler(); break;
+            
+        }
+
+        if(history.textContent.match(/[+\-x\/]/)){
+            second = result.textContent;
+        }
+       
+    })
+}
 
 function add(a, b) {return parseFloat(a) + parseFloat(b);}
 function subtract(a, b) {
@@ -141,4 +177,10 @@ function operate(operator, a, b){
 function truncateDecimals(number){
     return Math[number < 0 ? 'ceil' : 'floor'](number);
 };
+
+//function calls
+pressButton();
+pressKey();
+deleteSingleCharacter();
+deleteAllCharacters();
 
